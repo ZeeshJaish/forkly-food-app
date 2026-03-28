@@ -46,7 +46,7 @@ https://www.themealdb.com/api.php
 ## 📅 Milestones
 
 - Milestone 1: Project Setup and Planning ✅  
-- Milestone 2: API Integration  
+- Milestone 2: API Integration ✅
 - Milestone 3: Core Features  
 - Milestone 4: Deployment  
 
