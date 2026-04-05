@@ -1,12 +1,14 @@
 # 🍴 Forkly – Food Discovery Web App
 
 ## 📌 Overview
-Forkly is a modern web application that allows users to explore, search, and discover meals from around the world. It provides an intuitive interface to browse recipes, filter meals, and save favorites for later.
+Forkly is a modern food discovery web application that allows users to search and explore meals from around the world using real-time API data. The app provides a clean, responsive, and interactive interface to browse recipes dynamically.
+
+It focuses on delivering a smooth user experience with fast search, sorting options, favorites management, and theme customization.
 
 ---
 
 ## 🎯 Purpose
-The objective of this project is to demonstrate JavaScript fundamentals, API integration, and UI development by building a fully functional web application.
+The objective of this project is to demonstrate JavaScript fundamentals, API integration, and dynamic UI development by building a fully functional and interactive web application.
 
 ---
 
@@ -16,22 +18,37 @@ https://www.themealdb.com/api.php
 
 ---
 
-## ✨ Features (Planned)
+## ✨ Final Features
 
-- 🔍 Search meals by name  
-- 🧭 Filter meals by category (e.g., Chicken, Vegetarian, Dessert)  
-- 📊 Sort meals alphabetically  
-- ❤️ Add meals to favorites (using Local Storage)  
-- 📱 Fully responsive design  
+- 🔍 Debounced search functionality (real-time meal search)  
+- 🔄 Sorting (A–Z, Z–A using Array.sort)  
+- ❤️ Favorites system (using Array.filter + localStorage)  
+- 📂 View saved favorite meals  
+- 🌙 Dark mode toggle  
+- 📱 Fully responsive UI design  
+- ⚡ Loading and error handling states  
 
 ---
 
 ## 🛠️ Tech Stack
 
 - HTML  
-- CSS (Tailwind CSS optional)  
+- CSS  
 - JavaScript (ES6+)  
 - Fetch API  
+- LocalStorage  
+
+---
+
+## 🧠 Key Concepts Used
+
+- Higher-Order Functions:
+  - `Array.sort()` for sorting meals  
+  - `Array.filter()` for managing favorites  
+- Async/Await for API handling  
+- DOM manipulation  
+- Debouncing for optimized search  
+- State management using variables  
 
 ---
 
@@ -46,14 +63,25 @@ https://www.themealdb.com/api.php
 ## 📅 Milestones
 
 - Milestone 1: Project Setup and Planning ✅  
-- Milestone 2: API Integration ✅
-- Milestone 3: Core Features  
+- Milestone 2: API Integration and UI Development ✅  
+- Milestone 3: Core Features (Sorting, Favorites, Dark Mode) ✅  
 - Milestone 4: Deployment  
+
+---
+
+## 📚 What I Learned
+
+- Working with APIs using fetch and async/await  
+- Implementing Higher-Order Functions in real applications  
+- Managing application state and UI updates  
+- Building responsive layouts using CSS Grid  
+- Improving UX with debouncing and feedback states  
 
 ---
 
 ## 💡 Future Enhancements
 
-- Dark/Light mode  
-- Pagination  
-- Debounced search  
+- Advanced filtering options  
+- Pagination for large datasets  
+- Recipe detail view modal  
+- Backend integration for user accounts  
