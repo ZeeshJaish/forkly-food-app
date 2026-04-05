@@ -85,3 +85,7 @@ https://www.themealdb.com/api.php
 - Pagination for large datasets  
 - Recipe detail view modal  
 - Backend integration for user accounts  
+
+## 🌐 Live Demo
+
+https://forkly-food-app.vercel.app
