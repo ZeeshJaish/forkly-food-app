@@ -1,56 +1,146 @@
 const API_URL = "https://www.themealdb.com/api/json/v1/1/search.php?s=";
 
-const mealsContainer = document.getElementById("mealsContainer");
-const searchInput = document.getElementById("searchInput");
+document.addEventListener("DOMContentLoaded", () => {
 
-// Fetch meals from API
-async function fetchMeals(query = "chicken") {
-  mealsContainer.innerHTML = "<p>Loading...</p>";
+  const mealsContainer = document.getElementById("mealsContainer");
+  const searchInput = document.getElementById("searchInput");
+  const sortOption = document.getElementById("sortOption");
+  const themeToggle = document.getElementById("themeToggle");
+  const showFavoritesBtn = document.getElementById("showFavorites");
+  const logo = document.querySelector(".navbar h1");
 
-  try {
-    const res = await fetch(API_URL + query);
-    const data = await res.json();
+  let allMeals = [];
+  let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  let showingFavorites = false;
 
-    displayMeals(data.meals);
-  } catch (error) {
-    mealsContainer.innerHTML = "<p>Something went wrong. Try again.</p>";
-    console.error(error);
+  // 🔥 FETCH MEALS
+  async function fetchMeals(query = "chicken") {
+    mealsContainer.innerHTML = "<p>Loading...</p>";
+    showingFavorites = false;
+
+    try {
+      const res = await fetch(API_URL + query);
+
+      if (!res.ok) throw new Error("Network error");
+
+      const data = await res.json();
+
+      allMeals = data.meals || [];
+      displayMeals(allMeals);
+
+    } catch (error) {
+      console.error(error);
+      mealsContainer.innerHTML = "<p>No meals found</p>";
+    }
   }
-}
 
-// Display meals
-function displayMeals(meals) {
-  mealsContainer.innerHTML = "";
+  // 🔥 DISPLAY MEALS
+  function displayMeals(meals) {
+    mealsContainer.innerHTML = "";
 
-  if (!meals || meals.length === 0) {
-    mealsContainer.innerHTML = "<p>No meals found</p>";
-    return;
+    if (!meals || meals.length === 0) {
+      mealsContainer.innerHTML = "<p>No meals found</p>";
+      return;
+    }
+
+    meals.forEach(meal => {
+      const isFav = favorites.includes(meal.idMeal);
+
+      const card = document.createElement("div");
+      card.classList.add("meal-card");
+
+      card.innerHTML = `
+        <img src="${meal.strMealThumb}" alt="${meal.strMeal}" />
+        <h3>${meal.strMeal}</h3>
+        <div style="display:flex; gap:10px;">
+          <button onclick="toggleFavorite('${meal.idMeal}')">
+            ${isFav ? "💖" : "🤍"}
+          </button>
+        </div>
+      `;
+
+      mealsContainer.appendChild(card);
+    });
   }
 
-  meals.forEach(meal => {
-    const card = document.createElement("div");
-    card.classList.add("meal-card");
+  // 🔥 DEBOUNCED SEARCH
+  let timeout;
 
-    card.innerHTML = `
-      <img src="${meal.strMealThumb}" alt="${meal.strMeal}" />
-      <h3>${meal.strMeal}</h3>
-      <button>View</button>
-    `;
+  searchInput.addEventListener("input", () => {
+    clearTimeout(timeout);
 
-    mealsContainer.appendChild(card);
+    timeout = setTimeout(() => {
+      const query = searchInput.value.trim();
+
+      if (query === "") {
+        fetchMeals("chicken");
+      } else {
+        fetchMeals(query);
+      }
+    }, 400);
   });
-}
 
-// Search functionality
-searchInput.addEventListener("input", () => {
-  const query = searchInput.value.trim();
+  // 🔥 SORTING (HOF)
+  sortOption.addEventListener("change", () => {
+    if (showingFavorites) return;
 
-  if (query === "") {
-    fetchMeals("chicken");
-  } else {
-    fetchMeals(query);
+    let sortedMeals = [...allMeals];
+
+    if (sortOption.value === "asc") {
+      sortedMeals.sort((a, b) =>
+        a.strMeal.localeCompare(b.strMeal)
+      );
+    }
+
+    if (sortOption.value === "desc") {
+      sortedMeals.sort((a, b) =>
+        b.strMeal.localeCompare(a.strMeal)
+      );
+    }
+
+    displayMeals(sortedMeals);
+  });
+
+  // 🔥 FAVORITES TOGGLE (HOF: filter)
+  window.toggleFavorite = function (id) {
+    if (favorites.includes(id)) {
+      favorites = favorites.filter(item => item !== id);
+    } else {
+      favorites.push(id);
+    }
+
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+
+    if (showingFavorites) {
+      showFavorites();
+    } else {
+      displayMeals(allMeals);
+    }
+  };
+
+  // 🔥 SHOW FAVORITES
+  function showFavorites() {
+    const favMeals = allMeals.filter(meal =>
+      favorites.includes(meal.idMeal)
+    );
+
+    showingFavorites = true;
+    displayMeals(favMeals);
   }
-});
 
-// Initial load
-fetchMeals();
+  showFavoritesBtn.addEventListener("click", showFavorites);
+
+  // 🔥 DARK MODE
+  themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+  });
+
+  // 🔥 RESET (CLICK LOGO)
+  logo.addEventListener("click", () => {
+    displayMeals(allMeals);
+    showingFavorites = false;
+  });
+
+  // INITIAL LOAD
+  fetchMeals();
+});

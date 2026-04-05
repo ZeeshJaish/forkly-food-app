@@ -2,22 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Forkly</title>
 
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
+
+  <!-- NAVBAR -->
   <nav class="navbar">
     <h1>🍴 Forkly</h1>
-    <input type="text" id="searchInput" placeholder="Search meals..." />
+
+    <div style="display:flex; gap:10px; align-items:center;">
+      <input type="text" id="searchInput" placeholder="Search meals..." />
+
+      <button id="showFavorites">❤️</button>
+      <button id="themeToggle">🌙</button>
+    </div>
   </nav>
 
+  <!-- CONTROLS -->
+  <div class="controls">
+    <select id="sortOption">
+      <option value="default">Sort</option>
+      <option value="asc">A → Z</option>
+      <option value="desc">Z → A</option>
+    </select>
+  </div>
+
+  <!-- MAIN CONTENT -->
   <main>
     <section id="mealsContainer"></section>
   </main>
 
+  <!-- SCRIPT -->
   <script src="script.js"></script>
+
 </body>
 </html>
